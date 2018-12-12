@@ -18,13 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-
+/*
     // Recyclerview variables
     RecyclerView weekRecyclerview;
-    RecyclerView.Adapter adapter;
+    RecyclerView.Adapter adapter;*/
 
-    // Araaylist test
-    //ArrayList<Weetje> weetjes;
     AppDatabase database;
 
 
@@ -32,13 +30,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new DatabaseTask().execute(); // Voer database Asynctask uit
+        /*new DatabaseTask().execute(); // Voer database Asynctask uit*/
 
         //=============================================================
 
-        // Week fragment recyclerview/adapter
+        /*// Week fragment recyclerview/adapter
         weekRecyclerview = (RecyclerView) findViewById(R.id.week_recyclerview);
-        weekRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        weekRecyclerview.setLayoutManager(new LinearLayoutManager(this));*/
 
         /* Test loop
        weetjes = new ArrayList<>();
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-    private class DatabaseTask extends AsyncTask<Void, Void, Void> {
+    /*private class DatabaseTask extends AsyncTask<Void, Void, Void> {
         // Wat uitgevoerd wordt voor de eigenlijke Asynctask
         // Eventueel laadscherm laten zien
         @Override
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
         }
-    }
+    }*/
 
 
     // laad fragment in de fragment container in MainActivity
