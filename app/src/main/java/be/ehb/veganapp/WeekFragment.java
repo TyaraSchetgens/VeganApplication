@@ -1,5 +1,7 @@
 package be.ehb.veganapp;
 
+import android.app.Activity;
+import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +23,8 @@ public class WeekFragment extends Fragment {
     RecyclerView weekRecyclerview;
     RecyclerView.Adapter adapter;
 
+    AppDatabase mainDatabase;
+
     //=============================================================
     @Nullable
     @Override
@@ -30,6 +34,8 @@ public class WeekFragment extends Fragment {
         // Week fragment recyclerview/adapter
         weekRecyclerview = (RecyclerView) view.findViewById(R.id.week_recyclerview);
         weekRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mainDatabase = ((MainActivity)getActivity()).getDatabase();
         new DatabaseTask().execute(); // Voer database Asynctask uit
         return view;
     }
@@ -37,31 +43,14 @@ public class WeekFragment extends Fragment {
 
     // Database asynctask
     private class DatabaseTask extends AsyncTask<Void, Void, Void> {
-        // Wat uitgevoerd wordt voor de eigenlijke Asynctask
-        // Eventueel laadscherm laten zien
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
-        //Asynchrone taak uitvoeren uit de weg van de Main thread (voorkomt crashes!)
-        // Eventueel netwerk calls maken/database communicatie
         @Override
         protected Void doInBackground(Void... voids) {
-            // De roomdatabase die aangemaakt is, builden MAY INVOKE NULLPOINTER on getApplicationContext
-            AppDatabase database = Room.databaseBuilder(getActivity().getApplicationContext(), AppDatabase.class, "appDatabase").build();
-            List<Weetje>weetjes = database.WeetjeDAO().loadAllWeetjes();
+            List<Weetje>weetjes = mainDatabase.WeetjeDAO().loadAllWeetjes();
             adapter = new AppAdapter(weetjes);
             weekRecyclerview.setAdapter(adapter);
-            Log.i("Main", "doInBackground: activated");
+            Log.d("weekFragment", "doInBackground: activated");
             return null;
-        }
-
-        // Wat uitgevoerd wordt nadat de Asynctask is uitgevoerd
-        // Eventueel UI updaten
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
         }
     }
 }

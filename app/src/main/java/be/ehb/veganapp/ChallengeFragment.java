@@ -16,3 +16,5 @@ public class ChallengeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_challenges, null);
     }
 }
+
+// TODO: 12/12/2018 Add adaoter and recyclerview 
