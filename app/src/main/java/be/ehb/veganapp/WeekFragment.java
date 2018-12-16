@@ -1,8 +1,8 @@
 package be.ehb.veganapp;
 
-import android.app.Activity;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,13 +17,15 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import be.ehb.veganapp.Adapter.WeetjeAdapter;
+import be.ehb.veganapp.Model.Challenge;
+import be.ehb.veganapp.Model.Weetje;
+
 public class WeekFragment extends Fragment {
 
     //Variables
     RecyclerView weekRecyclerview;
-    RecyclerView.Adapter adapter;
-
-    AppDatabase mainDatabase;
+    private WeetjeViewModel viewModel;
 
     //=============================================================
     @Nullable
@@ -32,25 +34,37 @@ public class WeekFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_week, null);
 
         // Week fragment recyclerview/adapter
-        weekRecyclerview = (RecyclerView) view.findViewById(R.id.week_recyclerview);
+        weekRecyclerview = (RecyclerView) view.findViewById(R.id.weetje_recyclerview);
         weekRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mainDatabase = ((MainActivity)getActivity()).getDatabase();
-        new DatabaseTask().execute(); // Voer database Asynctask uit
+        final WeetjeAdapter adapter = new WeetjeAdapter();
+        weekRecyclerview.setAdapter(adapter);
+
+        // TODO: 16/12/2018 random weetje displayen EN enkel een per view
+
+        // VIewmodel
+        viewModel = ViewModelProviders.of(this).get(WeetjeViewModel.class);
+        viewModel.getAllWeetjes().observe(this, new Observer<List<Weetje>>() {
+            @Override
+            public void onChanged(@Nullable List<Weetje> weetjes) {
+                adapter.setWeetjes(weetjes);
+            }
+        });
+
         return view;
     }
     //=============================================================
 
-    // Database asynctask
+    /*// Database asynctask
     private class DatabaseTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
             List<Weetje>weetjes = mainDatabase.WeetjeDAO().loadAllWeetjes();
-            adapter = new AppAdapter(weetjes);
+            adapter = new WeetjeAdapter(weetjes);
             weekRecyclerview.setAdapter(adapter);
             Log.d("weekFragment", "doInBackground: activated");
             return null;
         }
-    }
+    }*/
 }

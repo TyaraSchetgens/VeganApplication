@@ -12,14 +12,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.List;
+
+import be.ehb.veganapp.DAO.ChallengeDAO;
+import be.ehb.veganapp.Model.Challenge;
+
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    // Een referentie naar de database. Nodig in alle fragmenten!
+    // Een referentie naar de database.
     private AppDatabase database;
 
 
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         protected Void doInBackground(Void... voids) {
             // De roomdatabase die aangemaakt is, builden
             database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "appDatabase").build();
-            Log.i("Main", "doInBackground: activated");
             return null;
         }
     }

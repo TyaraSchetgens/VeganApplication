@@ -7,7 +7,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import java.util.List;
-import be.ehb.veganapp.Gebruiker;
+import be.ehb.veganapp.Model.Gebruiker;
 
 @Dao
 public interface GebruikerDAO {

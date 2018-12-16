@@ -9,7 +9,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
-import be.ehb.veganapp.Challenge;
+import be.ehb.veganapp.Model.Challenge;
 
 
 @Dao
@@ -23,6 +23,9 @@ public interface ChallengeDAO {
     // Selecteer challenge op id
     @Query("SELECT * FROM challenge WHERE challenge_id = :id")
     public Challenge findChallengeById(int id);
+
+    @Query("SELECT COUNT(*) FROM challenge")
+    LiveData<Integer> getDataCount();
 
     // SET information -----------------------------------------
 

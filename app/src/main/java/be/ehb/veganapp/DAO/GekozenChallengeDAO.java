@@ -9,7 +9,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
-import be.ehb.veganapp.GekozenChallenge;
+import be.ehb.veganapp.Model.GekozenChallenge;
 
 @Dao
 public interface GekozenChallengeDAO {

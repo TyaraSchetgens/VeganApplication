@@ -1,9 +1,12 @@
 package be.ehb.veganapp;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 
 
 import be.ehb.veganapp.DAO.ChallengeDAO;
@@ -12,6 +15,12 @@ import be.ehb.veganapp.DAO.GekozenChallengeDAO;
 import be.ehb.veganapp.DAO.TrofeeDAO;
 import be.ehb.veganapp.DAO.VoltooideChallengeDAO;
 import be.ehb.veganapp.DAO.WeetjeDAO;
+import be.ehb.veganapp.Model.Challenge;
+import be.ehb.veganapp.Model.Gebruiker;
+import be.ehb.veganapp.Model.GekozenChallenge;
+import be.ehb.veganapp.Model.Trofee;
+import be.ehb.veganapp.Model.VoltooideChallenge;
+import be.ehb.veganapp.Model.Weetje;
 
 @Database(entities = {Gebruiker.class, Challenge.class, Trofee.class, Weetje.class, GekozenChallenge.class, VoltooideChallenge.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
@@ -31,10 +40,45 @@ public abstract class AppDatabase extends RoomDatabase {
                     // Wanneer er nog geen database bestaat, maak deze hier >
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "app_database")
+                            .fallbackToDestructiveMigration()
+                            //.addCallback(roomDatabaseCallback) testing
                             .build();
                 }
             }
         }
         return INSTANCE;
     }
+
+    //===================================================================
+    // Testing purposes snel de database populaten
+    private static RoomDatabase.Callback roomDatabaseCallback =
+            new RoomDatabase.Callback(){
+
+                @Override
+                public void onOpen (@NonNull SupportSQLiteDatabase db){
+                    super.onOpen(db);
+                    new PopulateDbAsync(INSTANCE).execute();
+                }
+            };
+
+    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+
+        private final WeetjeDAO weetjeDAO;
+
+        PopulateDbAsync(AppDatabase db) {
+            weetjeDAO = db.WeetjeDAO();
+        }
+
+        @Override
+        protected Void doInBackground(final Void... params) {
+
+            for (int i = 0; i < 10; i++) {
+                Weetje weetje = new Weetje("blabla" + i, "blabla");
+                weetjeDAO.insertWeetje(weetje);
+            }
+            return null;
+        }
+    }
+    //================================================================
 }
+

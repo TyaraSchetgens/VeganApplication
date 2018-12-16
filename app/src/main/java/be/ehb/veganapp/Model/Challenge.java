@@ -1,12 +1,9 @@
-package be.ehb.veganapp;
+package be.ehb.veganapp.Model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.graphics.Path;
 import android.support.annotation.NonNull;
-
-import java.util.Date;
 
 @Entity
 public class Challenge {

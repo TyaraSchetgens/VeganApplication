@@ -9,7 +9,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
-import be.ehb.veganapp.Trofee;
+import be.ehb.veganapp.Model.Trofee;
 
 @Dao
 public interface TrofeeDAO {

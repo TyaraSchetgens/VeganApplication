@@ -1,4 +1,4 @@
-package be.ehb.veganapp;
+package be.ehb.veganapp.Model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
