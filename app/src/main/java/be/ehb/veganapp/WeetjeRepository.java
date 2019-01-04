@@ -8,6 +8,8 @@ import java.util.List;
 
 import be.ehb.veganapp.DAO.WeetjeDAO;
 import be.ehb.veganapp.Model.Weetje;
+import be.ehb.veganapp.AppDatabase;
+
 
 public class WeetjeRepository {
     private WeetjeDAO weetjeDAO;

@@ -13,21 +13,38 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 
+import java.util.concurrent.ExecutionException;
+
 import be.ehb.veganapp.DAO.ChallengeDAO;
+import be.ehb.veganapp.DAO.GebruikerDAO;
 import be.ehb.veganapp.Model.Challenge;
+import be.ehb.veganapp.Model.Gebruiker;
 
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     // Een referentie naar de database.
     private AppDatabase database;
+    protected GebruikerDAO gebruikerDAO;
+
+    // Gebruiker
+    private int userId;
+    public static Gebruiker gebruiker;
 
 
+    //----------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         new BuildDatabase().execute(); // Voer database Asynctask uit
+
+        // Find gebruiker
+        gebruikerDAO = database.gebruikerDAO();
+        userId = 1;
+        getGebruikerbyId(userId);
+
+        Log.i("MAIN", "onCreate: " + gebruiker.getNaam());
 
         //BottomNav
         BottomNavigationView navigation = findViewById(R.id.navigation);
@@ -37,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // Fragments
         loadFragment(new WeekFragment());
     }
+    //----------------------------------------------------------------------------------------
 
     private class BuildDatabase extends AsyncTask<Void, Void, Void> {
         @Override
@@ -47,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-
+    // ------
     // laad fragment in de fragment container in MainActivity
     private boolean loadFragment(Fragment fragment) {
         if (fragment != null) {
@@ -60,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             return false;
         }
     }
+    // ------
 
     // Switch case om te checken welk navItem de gebruiker geselecteerd heeft
     @Override
@@ -81,10 +100,40 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         return loadFragment(fragment);
     }
+    // ------
 
-    //Getter voor refentie naar database
-    public AppDatabase getDatabase() {
-        return database;
+    // Get gebruikerById. Nodig voor de lifetime van hele app
+    public Gebruiker getGebruikerbyId(int id) {
+        Gebruiker g = null;
+        try {
+            g = new GetGebruikerByIdAsyncTask(gebruikerDAO).execute(id).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return g;
+    }
+
+    private class GetGebruikerByIdAsyncTask extends AsyncTask<Integer, Void, Gebruiker> {
+        private GebruikerDAO gebruikerDAO;
+
+        public GetGebruikerByIdAsyncTask(GebruikerDAO gebruikerDAO) {
+            this.gebruikerDAO = gebruikerDAO;
+        }
+
+        @Override
+        protected Gebruiker doInBackground(final Integer... params) {
+            Gebruiker g;
+            g = gebruikerDAO.getGebruikerById(params[0]);
+            return  g;
+        }
+
+        @Override
+        protected void onPostExecute(Gebruiker gebruiker) {
+            Log.i("REPO", "onPostExecute: " + gebruiker.getNaam());
+        }
+
     }
 }
 

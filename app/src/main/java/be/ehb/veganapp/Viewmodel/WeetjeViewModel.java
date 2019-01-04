@@ -1,13 +1,15 @@
-package be.ehb.veganapp;
+package be.ehb.veganapp.Viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
+import be.ehb.veganapp.AppDatabase;
 
 import java.util.List;
 
 import be.ehb.veganapp.Model.Weetje;
+import be.ehb.veganapp.WeetjeRepository;
 
 public class WeetjeViewModel extends AndroidViewModel {
    private WeetjeRepository repository;

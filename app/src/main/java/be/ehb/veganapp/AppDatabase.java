@@ -7,6 +7,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 
 import be.ehb.veganapp.DAO.ChallengeDAO;
@@ -41,7 +42,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "app_database")
                             .fallbackToDestructiveMigration()
-                            //.addCallback(roomDatabaseCallback) testing
+                            //.addCallback(roomDatabaseCallback)
                             .build();
                 }
             }
@@ -51,34 +52,36 @@ public abstract class AppDatabase extends RoomDatabase {
 
     //===================================================================
     // Testing purposes snel de database populaten
-    private static RoomDatabase.Callback roomDatabaseCallback =
-            new RoomDatabase.Callback(){
+    private static RoomDatabase.Callback roomDatabaseCallback = new RoomDatabase.Callback(){
 
-                @Override
-                public void onOpen (@NonNull SupportSQLiteDatabase db){
-                    super.onOpen(db);
-                    new PopulateDbAsync(INSTANCE).execute();
-                }
-            };
+        @Override
+        public void onOpen (@NonNull SupportSQLiteDatabase db){
+            super.onOpen(db);
+            new PopulateDbAsync(INSTANCE).execute();
+        }
+    };
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
-
-        private final WeetjeDAO weetjeDAO;
+        private final GebruikerDAO gebruikerDAO;
 
         PopulateDbAsync(AppDatabase db) {
-            weetjeDAO = db.WeetjeDAO();
+            gebruikerDAO = db.gebruikerDAO();
         }
 
         @Override
         protected Void doInBackground(final Void... params) {
 
-            for (int i = 0; i < 10; i++) {
-                Weetje weetje = new Weetje("blabla" + i, "blabla");
-                weetjeDAO.insertWeetje(weetje);
-            }
+            Gebruiker gc = new Gebruiker("Jane Doe", 1, 1, 0);
+            gebruikerDAO.insertGebruiker(gc);
+
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Log.i("APPDATABASE", "werkt");
+        }
     }
-    //================================================================
 }
 

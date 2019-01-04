@@ -8,6 +8,8 @@ import java.util.List;
 
 import be.ehb.veganapp.DAO.ChallengeDAO;
 import be.ehb.veganapp.Model.Challenge;
+import be.ehb.veganapp.AppDatabase;
+
 
 public class ChallengeRepository {
     private ChallengeDAO challengeDAO;

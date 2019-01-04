@@ -13,17 +13,15 @@ import be.ehb.veganapp.Model.Gebruiker;
 public interface GebruikerDAO {
 
     // GET information -----------------------------------------
-
     // Laadt alle gebruikers
     @Query("SELECT * FROM gebruiker")
-    List<Gebruiker> loadAllGebruikers();
+    List<Gebruiker> getAllGebruikers();
 
     // Selecteer gebruiker op id
     @Query("SELECT * FROM gebruiker WHERE gebruiker_id = :id")
-    public Gebruiker findGebruikerById(int id);
+    public Gebruiker getGebruikerById(int id);
 
     // SET information -----------------------------------------
-
     @Insert
     public void insertGebruiker(Gebruiker gebruiker);
 

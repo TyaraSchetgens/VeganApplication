@@ -3,6 +3,7 @@ package be.ehb.veganapp.Model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -120,11 +121,16 @@ public class Gebruiker {
         this.gewonnenTrofeeId = gewonnenTrofeeId;
     }
 
+
     //Constructor
     public Gebruiker(String naam, int weekStreak, int level, int ervaring) {
         this.naam = naam;
         this.weekStreak = weekStreak;
         this.level = level;
         this.ervaring = ervaring;
+        this.gekozenChallengeId = 1;        // Standaard waarden.
+        this.voltooideChallengeId = 1;      // nodig, anders foreignkey constraints!
+        this.gewonnenTrofeeId = 1;
     }
+
 }
