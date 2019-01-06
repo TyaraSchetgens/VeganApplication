@@ -12,6 +12,7 @@ import be.ehb.veganapp.Model.Gebruiker;
 
 public class GebruikerViewModel extends AndroidViewModel {
     private GebruikerRepository repository;
+    public Gebruiker gebruiker;
 
     public GebruikerViewModel(@NonNull Application application) {
         super(application);
@@ -34,8 +35,9 @@ public class GebruikerViewModel extends AndroidViewModel {
     }
 
     // GetbyId
-    /*public Gebruiker getGebruikerById(int gebruikerId) {
-        Gebruiker gebruiker = repository.getGebruikerbyId(gebruikerId);
+    public Gebruiker getGebruikerById(int gebruikerId) {
+        repository.getGebruikerbyId(gebruikerId);
+        Log.i("GEBRUIKER_VIEWMODEL", "getGebruikerById: " + gebruiker.getNaam());
         return gebruiker;
-    }*/
+    }
 }

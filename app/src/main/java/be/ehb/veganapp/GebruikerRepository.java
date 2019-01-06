@@ -9,11 +9,13 @@ import java.util.List;
 
 import be.ehb.veganapp.DAO.GebruikerDAO;
 import be.ehb.veganapp.Model.Gebruiker;
+import be.ehb.veganapp.Viewmodel.GebruikerViewModel;
 import be.ehb.veganapp.AppDatabase;
 
 
 public class GebruikerRepository {
     private GebruikerDAO gebruikerDAO;
+    GebruikerViewModel model;
 
     public GebruikerRepository(Application application) {
         AppDatabase database = AppDatabase.getDatabase(application);
@@ -37,17 +39,17 @@ public class GebruikerRepository {
         new DeleteGebruikerAsyncTask(gebruikerDAO).execute(gebruiker);
     }
 
-    /*public Gebruiker getGebruikerbyId(int id) {
+    public void getGebruikerbyId(int id) {
         Gebruiker g; // wordt gereturned door getbyid
         GetGebruikerByIdAsyncTask asyncTask = new GetGebruikerByIdAsyncTask(gebruikerDAO, new GetGebruikerByIdAsyncTask.RecievedGebruiker() {
             @Override
             public void onResponseRecieved(Gebruiker response) {
-                super. = response;
-                Log.i("GetbyID response", "onResponseRecieved: " + g.getNaam());
+                model.gebruiker = response;
+                Log.i("GetbyID response", "onResponseRecieved: " + response.getNaam());
             }
         });
         asyncTask.execute(id);
-    }*/
+    }
 
     // ASYNCTTASKS =====================================
 
@@ -98,9 +100,8 @@ public class GebruikerRepository {
 
     // GetGebruikerById
     //----------------------------------------------------------------------------------------
-    /*private static class GetGebruikerByIdAsyncTask extends AsyncTask<Integer, Void, Gebruiker> {
+    private static class GetGebruikerByIdAsyncTask extends AsyncTask<Integer, Void, Gebruiker> {
         private GebruikerDAO gebruikerDAO;
-        private boolean isFinished = false;
 
         // Interface om gebruiker vanuit getgebruikerbyid te parsen naar de methode
         public interface RecievedGebruiker {
@@ -122,11 +123,11 @@ public class GebruikerRepository {
 
         @Override
         protected void onPostExecute(Gebruiker gebruiker) {
+            super.onPostExecute(gebruiker);
             Log.i("REPO", "onPostExecute: " + gebruiker.getNaam());
             foundGebruiker.onResponseRecieved(gebruiker);
-            isFinished = true;
         }
 
-    }*/
+    }
     //----------------------------------------------------------------------------------------
 }
